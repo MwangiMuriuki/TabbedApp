@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "549892911283",
+    "firebase_url": "https://tabbedapp-37ab2.firebaseio.com",
+    "project_id": "tabbedapp-37ab2",
+    "storage_bucket": "tabbedapp-37ab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549892911283:android:0494e430d59ae33b",
+        "android_client_info": {
+          "package_name": "com.example.a001759.tabbedapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549892911283-ubmedk7uj45o7t7tphrphlnjljurkt2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.a001759.tabbedapp",
+            "certificate_hash": "d06386df8f02782ca0a8c7f03a64e19a092c26e2"
+          }
+        },
+        {
+          "client_id": "549892911283-ipt35dtkcg1h1q3rmg6f159rfmkd6k2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNN9EdVXfxo4eMFJmqQaK_xLJvz6dEIMw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549892911283-ipt35dtkcg1h1q3rmg6f159rfmkd6k2k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
