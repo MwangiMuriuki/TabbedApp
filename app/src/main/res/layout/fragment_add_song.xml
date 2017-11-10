@@ -28,6 +28,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/entryFieldsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -100,21 +101,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/clearBtn"
             android:layout_width="100dp"
             android:layout_height="45dp"
+            android:layout_margin="8dp"
             android:text="Clear all"/>
 
         <Button
             android:id="@+id/addBtn"
             android:layout_width="100dp"
             android:layout_height="45dp"
-            android:text="Add Song"/>
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:text="Add Song" />
+    </RelativeLayout>
 </android.support.v7.widget.LinearLayoutCompat>

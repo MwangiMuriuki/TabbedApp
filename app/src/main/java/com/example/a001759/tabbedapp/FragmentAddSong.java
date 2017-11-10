@@ -5,11 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 /**
@@ -67,15 +73,63 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
 
     private void mthdClear() {
 
-        Toast.makeText(getContext(), "Clear Button clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Timothy clicked the Clear Button", Toast.LENGTH_LONG).show();
 
     }
 
     private void mthdAdd() {
 
-        Toast.makeText(getContext(), "Add button clicked", Toast.LENGTH_LONG).show();
+        String Artist = songArtist.getEditText().getText().toString();
+        String Title = songTitle.getEditText().getText().toString();
+        String Lyrics = songLyrics.getEditText().getText().toString();
+
+        songTitle.setError(null);
+        songArtist.setError(null);
+        songLyrics.setError(null);
+
+        View focusView = null;
+        boolean cancel = false;
+
+        if(TextUtils.isEmpty(Title)){
+            songTitle.setError(getString(R.string.enter_title));
+            focusView = songTitle;
+            cancel = true;
+        }
+        else if ((TextUtils.isEmpty(Artist))){
+                songArtist.setError(getString(R.string.enter_artist_name));
+                focusView = songArtist;
+                cancel = true;
+        }
+        else if(TextUtils.isEmpty(Lyrics)){
+
+                    songLyrics.setError(getString(R.string.enter_lyrics));
+                    focusView = songLyrics;
+                    cancel = true;
+        }
+        if (cancel) {
+            // There was an error; Focus the form field with an error.
+            focusView.requestFocus();
+        }
+
+        else{
+
+            // Write a message to the database
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference().child("Songs");
+//
+
+            HashMap<String, String> UserMap = new HashMap<>();
+            UserMap.put("title", Title);
+            UserMap.put("artist", Artist);
+            UserMap.put("lyrics", Lyrics);
+
+            myRef.setValue(UserMap);
+
+            Toast.makeText(getContext(), "Timothy clicked the Add button", Toast.LENGTH_LONG).show();
+
+        }
+
 
     }
-
 
 }
