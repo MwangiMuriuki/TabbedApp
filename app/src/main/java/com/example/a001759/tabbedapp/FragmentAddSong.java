@@ -115,7 +115,7 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
 
             // Write a message to the database
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference().child("Songs");
+            DatabaseReference myRef = database.getReference().child("Songs").child(String.valueOf(getId()));
 //
 
             HashMap<String, String> UserMap = new HashMap<>();
