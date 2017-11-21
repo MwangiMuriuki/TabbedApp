@@ -5,14 +5,15 @@ package com.example.a001759.tabbedapp;
  */
 
 public class ListItemSongList {
-String songTitle, songArtist;
+String songTitle, songArtist, songLyrics;
 
     public ListItemSongList() {
     }
 
-    public ListItemSongList(String songTitle, String songArtist) {
+    public ListItemSongList(String songTitle, String songArtist, String songLyrics) {
         this.songTitle = songTitle;
         this.songArtist = songArtist;
+        this.songLyrics = songLyrics;
     }
 
     public String getSongTitle() {
@@ -29,5 +30,13 @@ String songTitle, songArtist;
 
     public void setSongArtist(String songArtist) {
         this.songArtist = songArtist;
+    }
+
+    public String getSongLyrics() {
+        return songLyrics;
+    }
+
+    public void setSongLyrics(String songLyrics) {
+        this.songLyrics = songLyrics;
     }
 }

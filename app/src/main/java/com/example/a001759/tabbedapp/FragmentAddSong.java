@@ -115,7 +115,7 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
 
             // Write a message to the database
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference().child("Songs").child(String.valueOf(getId()));
+            DatabaseReference myRef = database.getReference().child("Songs");
 //
 
             HashMap<String, String> UserMap = new HashMap<>();
@@ -123,9 +123,9 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
             UserMap.put("artist", Artist);
             UserMap.put("lyrics", Lyrics);
 
-            myRef.setValue(UserMap);
+            myRef.push().setValue(UserMap);
 
-            Toast.makeText(getContext(), "Timothy clicked the Add button", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Song added Successfully!!!", Toast.LENGTH_LONG).show();
 
         }
 
