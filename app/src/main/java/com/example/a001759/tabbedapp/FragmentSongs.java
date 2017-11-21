@@ -76,7 +76,7 @@ public class FragmentSongs extends Fragment {
             }
         };
 
-        rView.setAdapter(adapter);
+        rView.setAdapter(firebaseRecyclerAdapter);
 
     }
 
