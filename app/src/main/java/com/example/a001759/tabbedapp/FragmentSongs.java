@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +31,7 @@ public class FragmentSongs extends Fragment {
 
     public RecyclerView rView;
     public RecyclerView.Adapter adapter;
+    FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
 
@@ -39,18 +42,22 @@ public class FragmentSongs extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.songs_recycler_view, container, false);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Songs");
+//        firebaseDatabase = FirebaseDatabase.getInstance();
+//        databaseReference = firebaseDatabase.getReference().child("Songs");
+
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
+
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         rView = view.findViewById(R.id.recycler_view);
-        rView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rView.setLayoutManager(linearLayoutManager);
 
         FirebaseRecyclerOptions<ListItemSongList> myList = new FirebaseRecyclerOptions.Builder<ListItemSongList>()
-                .setQuery(databaseReference, ListItemSongList.class).build();
+                .setQuery(firebaseDatabase, ListItemSongList.class).build();
 
         final FirebaseRecyclerAdapter firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ListItemSongList, SongsViewHolder>(myList){
 
@@ -70,8 +77,6 @@ public class FragmentSongs extends Fragment {
                 holder.setTitle(model.getSongTitle());
                 holder.setArtist(model.getSongArtist());
                 holder.setLyrics(model.getSongLyrics());
-
-                Log.d(TAG, "Title: title" + model.songTitle);
 
             }
         };
@@ -134,6 +139,8 @@ public class FragmentSongs extends Fragment {
         public void setTitle(String myTitle){
             TextView songTitleView = mview.findViewById(R.id.cardSongTitle);
             songTitleView.setText(myTitle);
+
+            Log.d(TAG, "Title: title" + myTitle);
         }
 
         public  void setArtist(String myArtist){
