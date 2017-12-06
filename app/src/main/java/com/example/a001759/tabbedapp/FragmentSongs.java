@@ -40,18 +40,50 @@ public class FragmentSongs extends Fragment {
         // Required empty public constructor
     }
 
+    public static class SongsViewHolder extends RecyclerView.ViewHolder{
+
+        //        View mview;
+        TextView anotherTitle;
+        TextView anotherArtist;
+        TextView anotherLyric;
+
+        public SongsViewHolder(View itemView) {
+            super(itemView);
+
+//            mview = itemView;
+            anotherTitle = itemView.findViewById(R.id.cardSongTitle);
+            anotherArtist = itemView.findViewById(R.id.cardSongArtist);
+        }
+
+        public void setTitle(String myTitle){
+//            TextView songTitleView = mview.findViewById(R.id.cardSongTitle);
+//            songTitleView.setText(myTitle);
+            anotherTitle.setText(myTitle);
+
+            Log.d(TAG, "Title: title" + myTitle);
+        }
+
+        public  void setArtist(String myArtist){
+//            TextView songArtistView = mview.findViewById(R.id.cardSongArtist);
+//            songArtistView.setText(myArtist);
+
+            anotherArtist.setText(myArtist);
+
+        }
+
+        public void setLyrics(String myLyrics){}
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.songs_recycler_view, container, false);
 
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-//        databaseReference = firebaseDatabase.getReference().child("Songs");
 
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
         rView = view.findViewById(R.id.recycler_view);
         rView.setLayoutManager(linearLayoutManager);
@@ -74,7 +106,7 @@ public class FragmentSongs extends Fragment {
             @Override
             public void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
 
-                holder.setTitle(model.getSongTitle());
+                holder.anotherTitle.setText(model.getSongTitle());
                 holder.setArtist(model.getSongArtist());
                 holder.setLyrics(model.getSongLyrics());
 
@@ -121,36 +153,6 @@ public class FragmentSongs extends Fragment {
 //        rView.setAdapter(firebaseRecyclerAdapter);
     }
 
-    public static class SongsViewHolder extends RecyclerView.ViewHolder{
-
-        View mview;
-        TextView anotherTitle;
-        TextView anotherArtist;
-        TextView anotherLyric;
-
-        public SongsViewHolder(View itemView) {
-            super(itemView);
-
-            mview = itemView;
-            anotherTitle = itemView.findViewById(R.id.cardSongTitle);
-            anotherArtist = itemView.findViewById(R.id.cardSongArtist);
-        }
-
-        public void setTitle(String myTitle){
-            TextView songTitleView = mview.findViewById(R.id.cardSongTitle);
-            songTitleView.setText(myTitle);
-
-            Log.d(TAG, "Title: title" + myTitle);
-        }
-
-        public  void setArtist(String myArtist){
-            TextView songArtistView = mview.findViewById(R.id.cardSongArtist);
-            songArtistView.setText(myArtist);
-
-        }
-
-        public void setLyrics(String myLyrics){}
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
