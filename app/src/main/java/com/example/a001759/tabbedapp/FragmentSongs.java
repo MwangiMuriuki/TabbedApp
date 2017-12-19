@@ -12,14 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -41,8 +51,8 @@ public class FragmentSongs extends Fragment {
     }
 
     public static class SongsViewHolder extends RecyclerView.ViewHolder{
+        View mview;
 
-        //        View mview;
         TextView anotherTitle;
         TextView anotherArtist;
         TextView anotherLyric;
@@ -50,22 +60,19 @@ public class FragmentSongs extends Fragment {
         public SongsViewHolder(View itemView) {
             super(itemView);
 
-//            mview = itemView;
-            anotherTitle = itemView.findViewById(R.id.cardSongTitle);
-            anotherArtist = itemView.findViewById(R.id.cardSongArtist);
+            mview = itemView;
+            anotherTitle = mview.findViewById(R.id.cardSongTitle);
+            anotherArtist = mview.findViewById(R.id.cardSongArtist);
         }
 
         public void setTitle(String myTitle){
-//            TextView songTitleView = mview.findViewById(R.id.cardSongTitle);
-//            songTitleView.setText(myTitle);
+
             anotherTitle.setText(myTitle);
 
             Log.d(TAG, "Title: title" + myTitle);
         }
 
         public  void setArtist(String myArtist){
-//            TextView songArtistView = mview.findViewById(R.id.cardSongArtist);
-//            songArtistView.setText(myArtist);
 
             anotherArtist.setText(myArtist);
 
@@ -81,39 +88,76 @@ public class FragmentSongs extends Fragment {
         View view = inflater.inflate(R.layout.songs_recycler_view, container, false);
 
 
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
+//        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
+//
+//        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+//
+//        rView = view.findViewById(R.id.recycler_view);
+//        rView.setLayoutManager(linearLayoutManager);
+//
+//        FirebaseRecyclerOptions<ListItemSongList> myList = new FirebaseRecyclerOptions.Builder<ListItemSongList>()
+//                .setQuery(firebaseDatabase, ListItemSongList.class).build();
+//
+//        final FirebaseRecyclerAdapter firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ListItemSongList, SongsViewHolder>(myList){
+//
+//            public static final String TAG = "tag";
+//
+//            @Override
+//            public SongsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//
+//                View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
+//
+//                return new SongsViewHolder(myView);
+//            }
+//
+//            @Override
+//            public void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
+//
+//                holder.anotherTitle.setText(model.getSongTitle());
+//                holder.setArtist(model.getSongArtist());
+//                holder.setLyrics(model.getSongLyrics());
+//
+//            }
+//        };
+//
+//        rView.setAdapter(firebaseRecyclerAdapter);
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        CollectionReference firestoreQuery = FirebaseFirestore.getInstance().collection("Songs");
 
-        rView = view.findViewById(R.id.recycler_view);
-        rView.setLayoutManager(linearLayoutManager);
+        FirestoreRecyclerOptions<ListItemSongList> Options = new FirestoreRecyclerOptions.Builder<ListItemSongList>()
+                .setQuery(firestoreQuery, ListItemSongList.class)
+                .build();
 
-        FirebaseRecyclerOptions<ListItemSongList> myList = new FirebaseRecyclerOptions.Builder<ListItemSongList>()
-                .setQuery(firebaseDatabase, ListItemSongList.class).build();
-
-        final FirebaseRecyclerAdapter firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ListItemSongList, SongsViewHolder>(myList){
-
-            public static final String TAG = "tag";
+        FirestoreRecyclerAdapter firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<ListItemSongList, SongsViewHolder>(Options) {
 
             @Override
             public SongsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-                View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
 
-                return new SongsViewHolder(myView);
+                return new SongsViewHolder(v);
             }
 
             @Override
-            public void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
+            protected void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
 
-                holder.anotherTitle.setText(model.getSongTitle());
+                holder.setTitle(model.getSongTitle());
                 holder.setArtist(model.getSongArtist());
-                holder.setLyrics(model.getSongLyrics());
+//                holder.anotherLyric.setText(model.getSongLyrics());
 
+
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+
+                String error = String.valueOf(Log.e("error", e.getMessage()));
+
+                Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
             }
         };
 
-        rView.setAdapter(firebaseRecyclerAdapter);
 
        return  view;
     }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -73,7 +74,7 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
 
     private void mthdClear() {
 
-        Toast.makeText(getContext(), "Timothy clicked the Clear Button", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Clear Button Clicked", Toast.LENGTH_LONG).show();
 
     }
 
@@ -114,17 +115,31 @@ public class FragmentAddSong extends Fragment implements View.OnClickListener {
         else{
 
             // Write a message to the database
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference().child("Songs");
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference myRef = database.getReference().child("Songs");
+//
+//            HashMap<String, String> UserMap = new HashMap<>();
+//            UserMap.put("title", Title);
+//            UserMap.put("artist", Artist);
+//            UserMap.put("lyrics", Lyrics);
+//
+//            myRef.push().setValue(UserMap);
+//
+//            Toast.makeText(getContext(), "Song added Successfully!!!", Toast.LENGTH_LONG).show();
 
-            HashMap<String, String> UserMap = new HashMap<>();
-            UserMap.put("title", Title);
-            UserMap.put("artist", Artist);
-            UserMap.put("lyrics", Lyrics);
+            //Write to Firebase FireStore
 
-            myRef.push().setValue(UserMap);
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-            Toast.makeText(getContext(), "Song added Successfully!!!", Toast.LENGTH_LONG).show();
+            HashMap<String, String> fireMap = new HashMap<>();
+            fireMap.put("title", Title);
+            fireMap.put("artist", Artist);
+            fireMap.put("lyrics", Lyrics);
+
+            firebaseFirestore.collection("Songs").add(fireMap);
+
+            Toast.makeText(getContext(), "Song added to Firestore DB Successfully!!!", Toast.LENGTH_LONG).show();
+
 
         }
 

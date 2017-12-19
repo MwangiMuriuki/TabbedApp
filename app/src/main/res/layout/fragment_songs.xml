@@ -1,18 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.example.a001759.tabbedapp.FragmentSongs"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:padding="5dp"
-        android:layout_margin="5dp">
 
         <FrameLayout
             android:background="@drawable/card_view_design"
@@ -52,6 +46,5 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</android.support.v7.widget.CardView>
