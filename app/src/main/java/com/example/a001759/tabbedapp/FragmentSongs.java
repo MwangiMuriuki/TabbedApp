@@ -27,6 +27,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
@@ -43,6 +44,11 @@ public class FragmentSongs extends Fragment {
     public RecyclerView.Adapter adapter;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseFirestore myFirestore;
+    CollectionReference collectionReference;
+    Query firestoreQuery;
+    FirestoreRecyclerAdapter firestoreRecyclerAdapter;
+
 
 
 
@@ -81,71 +87,31 @@ public class FragmentSongs extends Fragment {
         public void setLyrics(String myLyrics){}
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.songs_recycler_view, container, false);
+    public void onStart() {
+        super.onStart();
 
-
-//        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
-//
-//        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-//
-//        rView = view.findViewById(R.id.recycler_view);
-//        rView.setLayoutManager(linearLayoutManager);
-//
-//        FirebaseRecyclerOptions<ListItemSongList> myList = new FirebaseRecyclerOptions.Builder<ListItemSongList>()
-//                .setQuery(firebaseDatabase, ListItemSongList.class).build();
-//
-//        final FirebaseRecyclerAdapter firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ListItemSongList, SongsViewHolder>(myList){
-//
-//            public static final String TAG = "tag";
-//
-//            @Override
-//            public SongsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//
-//                View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
-//
-//                return new SongsViewHolder(myView);
-//            }
-//
-//            @Override
-//            public void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
-//
-//                holder.anotherTitle.setText(model.getSongTitle());
-//                holder.setArtist(model.getSongArtist());
-//                holder.setLyrics(model.getSongLyrics());
-//
-//            }
-//        };
-//
-//        rView.setAdapter(firebaseRecyclerAdapter);
-
-        CollectionReference firestoreQuery = FirebaseFirestore.getInstance().collection("Songs");
-
-        FirestoreRecyclerOptions<ListItemSongList> Options = new FirestoreRecyclerOptions.Builder<ListItemSongList>()
+        FirestoreRecyclerOptions<ListItemSongList> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<ListItemSongList>()
                 .setQuery(firestoreQuery, ListItemSongList.class)
                 .build();
 
-        FirestoreRecyclerAdapter firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<ListItemSongList, SongsViewHolder>(Options) {
-
-            @Override
-            public SongsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
-
-                return new SongsViewHolder(v);
-            }
+       firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<ListItemSongList, SongsViewHolder>(firestoreRecyclerOptions) {
 
             @Override
             protected void onBindViewHolder(SongsViewHolder holder, int position, ListItemSongList model) {
 
                 holder.setTitle(model.getSongTitle());
                 holder.setArtist(model.getSongArtist());
-//                holder.anotherLyric.setText(model.getSongLyrics());
+                holder.setLyrics(model.getSongLyrics());
 
+            }
 
+            @Override
+            public FragmentSongs.SongsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_songs, parent, false);
+
+                return new FragmentSongs.SongsViewHolder(view);
             }
 
             @Override
@@ -158,16 +124,31 @@ public class FragmentSongs extends Fragment {
             }
         };
 
-
-       return  view;
     }
 
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.songs_recycler_view, container, false);
+
+
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("songs");
+
+        collectionReference = myFirestore.collection("Music");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+
+        rView = view.findViewById(R.id.recycler_view);
+        rView.setLayoutManager(linearLayoutManager);
+        rView.setAdapter(firestoreRecyclerAdapter);
+        firestoreQuery = myFirestore.collection("Music");
+
+
 
 //        FirebaseRecyclerOptions<ListItemSongList> myList = new FirebaseRecyclerOptions.Builder<ListItemSongList>()
-//                .setQuery(databaseReference, ListItemSongList.class).build();
+//                .setQuery(firebaseDatabase, ListItemSongList.class).build();
 //
 //        final FirebaseRecyclerAdapter firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ListItemSongList, SongsViewHolder>(myList){
 //
@@ -188,14 +169,16 @@ public class FragmentSongs extends Fragment {
 //                holder.setArtist(model.getSongArtist());
 //                holder.setLyrics(model.getSongLyrics());
 //
-//                Log.d(TAG, "Title: title" + model.songTitle);
-//
 //
 //            }
 //        };
 //
-//        rView.setAdapter(firebaseRecyclerAdapter);
+//        adapter = firebaseRecyclerAdapter;
+
+       return  view;
     }
+
+
 
 
     @Override

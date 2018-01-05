@@ -51,7 +51,7 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.songs_recycler_view, container, false);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         rView = v.findViewById(R.id.recycler_view);
         rView.setLayoutManager(linearLayoutManager);

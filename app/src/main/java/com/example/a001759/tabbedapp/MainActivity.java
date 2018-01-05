@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_song_list:
 
-                    ft.replace(R.id.content, new BlankFragment()).commit();
+                    ft.replace(R.id.content, new FragmentSongs()).commit();
 
                     return true;
 
